@@ -4,8 +4,12 @@ from flask import Flask,request,render_template
 import replicate
 import os
 import time
+from openai import OpenAI
 
 os.environ["REPLICATE_API_TOKEN"]="r8_2idkAutIh1jCAVVRIbEDgqt9zNUdbhG2cS1AF"
+
+openai_api_key = os.getenv("OPENAI_API_KEY")
+model = OpenAI(api_key=openai_api_key)
 
 app = Flask(__name__)
 
@@ -31,7 +35,17 @@ def text_gpt():
 @app.route("/text_result",methods=["GET","POST"])
 def text_result():
     q = request.form.get("q")
-    return(render_template("text_result.html",r="API not ready"))
+    r = model.chat.completions.create(
+    model = "gpt-3.5-turbo",
+    messages = [
+        {
+            "role":"user",
+            "content": q
+        }
+    ]
+  )
+  time.sleep(5)
+  return(render_template("text_gpt.html",r = r.choices[0].message.content))
 
 @app.route("/image_gpt",methods=["GET","POST"])
 def image_gpt():
