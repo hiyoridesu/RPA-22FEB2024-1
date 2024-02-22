@@ -35,17 +35,7 @@ def text_gpt():
 @app.route("/text_result",methods=["GET","POST"])
 def text_result():
     q = request.form.get("q")
-    r = model.chat.completions.create(
-    model = "gpt-3.5-turbo",
-    messages = [
-        {
-            "role":"user",
-            "content": q
-        }
-    ]
-  )
-  time.sleep(5)
-  return(render_template("text_gpt.html",r = r.choices[0].message.content))
+    return(render_template("text_result.html",r="API not ready"))
 
 @app.route("/image_gpt",methods=["GET","POST"])
 def image_gpt():
